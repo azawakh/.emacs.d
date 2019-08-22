@@ -4,7 +4,7 @@
 
 ;; Author: codefalling <code.falling@gmail.com>
 ;; Keywords: languages
-;; Package-Version: 20190415.231
+;; Package-Version: 0.4
 
 ;; Version: 0.4.0
 ;; Package-Requires: ((mmm-mode "0.5.5") (vue-html-mode "0.2") (ssass-mode "0.2") (edit-indirect "0.1.4"))
@@ -55,17 +55,12 @@
     (:type script :name coffee :mode coffee-mode)
     (:type script :name ts :mode typescript-mode)
     (:type script :name typescript :mode typescript-mode)
-    (:type script :name tsx :mode typescript-tsx-mode)
     (:type style :name nil :mode css-mode)
     (:type style :name css :mode css-mode)
     (:type style :name stylus :mode stylus-mode)
     (:type style :name less :mode less-css-mode)
-    (:type style :name postcss :mode css-mode)
     (:type style :name scss :mode css-mode)
-    (:type style :name sass :mode ssass-mode)
-    (:type i18n :name nil :mode json-mode)
-    (:type i18n :name json :mode json-mode)
-    (:type i18n :name yaml :mode yaml-mode))
+    (:type style :name sass :mode ssass-mode))
   "A list of vue component languages.
 
 A component language consists of a langauge type, name, and
@@ -88,8 +83,7 @@ submode to pug-mode."
   :type '(repeat (list (const :format "Language Type: " :type)
                        (choice (const template)
                                (const script)
-                               (const style)
-                               (symbol :tag "Custom element type"))
+                               (const style))
                        (const :format "" :name)
                        (symbol :format "Language Name: %v")
 
@@ -135,31 +129,23 @@ add an entry with a root mode of `js-mode' and dedicated mode of `js2-mode'"
   "Matches anything but 'lang'. See `vue--front-tag-regex'.")
 
 (defconst vue--front-tag-lang-regex
-  (concat "<%s"                               ; The tag name
-          "\\(?:"                             ; Zero of more of...
-          "\\(?:\\s-+\\w+=[\"'].*?[\"']\\)"   ; Any optional key-value pairs like type="foo/bar"
-          "\\|\\(?:\\s-+scoped\\)"            ; The optional "scoped" attribute
-          "\\|\\(?:\\s-+module\\)"            ; The optional "module" attribute
-          "\\)*"
-          "\\(?:\\s-+lang=[\"']%s[\"']\\)"    ; The language specifier (required)
-          "\\(?:"                             ; Zero of more of...
-          "\\(?:\\s-+\\w+=[\"'].*?[\"']\\)"   ; Any optional key-value pairs like type="foo/bar"
-          "\\|\\(?:\\s-+scoped\\)"            ; The optional "scoped" attribute
-          "\\|\\(?:\\s-+module\\)"            ; The optional "module" attribute
-          "\\)*"
-          " *>\n")                            ; The end of the tag
+  (concat "<%s"                              ; The tag name
+          "\\(?: +\\w+=[\"'].*?[\"'] *?\\)*" ; Any optional key-value pairs like type="foo/bar"
+          " +lang=[\"']%s[\"']"              ; The language specifier
+          "\\(?: +\\w+=[\"'].*?[\"'] *?\\)*" ; More optional key-value pairs
+          "\\(?: +scoped\\)?"                ; The optional "scoped" attribute
+          "\\(?: +module\\)?"                ; The optional "module" attribute
+          " *>\n")                           ; The end of the tag
   "A regular expression for the starting tags of template areas with languages.
 To be formatted with the tag name, and the language.")
 
 (defconst vue--front-tag-regex
   (concat "<%s"                        ; The tag name
-          "\\(?:"                      ; Zero of more of...
-          "\\(?:\\s-+" vue--not-lang-key "[\"'][^\"']*?[\"']\\)" ; Any optional key-value pairs like type="foo/bar".
+          "\\(?: +" vue--not-lang-key "[\"'][^\"']*?[\"'] *?\\)*" ; Any optional key-value pairs like type="foo/bar".
           ;; ^ Disallow "lang" in k/v pairs to avoid matching regions with non-default languages
-          "\\|\\(?:\\s-+scoped\\)"      ; The optional "scoped" attribute
-          "\\|\\(?:\\s-+module\\)"      ; The optional "module" attribute
-          "\\)*"
-          "\\s-*>\n")                     ; The end of the tag
+          "\\(?: +scoped\\)?"          ; The optional "scoped" attribute
+          "\\(?: +module\\)?"          ; The optional "module" attribute
+          " *>\n")                     ; The end of the tag
   "A regular expression for the starting tags of template areas.
 To be formatted with the tag name.")
 
