@@ -12,7 +12,7 @@
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (vue-mode git-gutter edit-server json-mode tide typescript-mode prettier-js company-tern company markdown-preview-mode handlebars-mode pug-mode yaml-mode slim-mode markdown-mode eshell-git-prompt add-node-modules-path flycheck helm-ls-hg package-utils helm-ls-git web-mode js2-mode helm-git-grep)))
+    (lsp-vue lsp-mode vue-mode git-gutter edit-server json-mode tide typescript-mode prettier-js company-tern company markdown-preview-mode handlebars-mode pug-mode yaml-mode slim-mode markdown-mode eshell-git-prompt add-node-modules-path flycheck helm-ls-hg package-utils helm-ls-git web-mode js2-mode helm-git-grep)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -20,6 +20,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Ricty Diminished" :foundry "outline" :slant normal :weight normal :height 120 :width normal)))))
+
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 ;;; packages:
 (package-initialize)
@@ -165,11 +167,8 @@
             ))
 
 ;;; typescriptの設定:
-(require 'typescript-mode)
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
-(add-hook 'typescript-mode-hook
-          (lambda ()
+;;;; tide-modeのセットアップ用関数
+(defun setup-tide-mode ()
             (interactive)
             (setq typescript-indent-level my-js-mode-indent-num)
             (add-node-modules-path)
@@ -185,8 +184,11 @@
             (prettier-js-mode)
             ;; (setq flycheck-check-syntax-automatically '(save mode-enabled))
             (eldoc-mode t)
-            (js-company-tern-hook)
-            ))
+            (js-company-tern-hook))
+
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+(add-hook 'typescript-mode-hook #'setup-tide-mode)
 (flycheck-add-mode 'javascript-eslint 'typescript-mode)
 
 ;;; handlebarsの設定:
@@ -231,12 +233,13 @@
 
 ;;; vue:
 (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))
-(eval-after-load 'vue-mode
-  '(add-hook 'vue-mode-hook #'add-node-modules-path))
-(flycheck-add-mode 'javascript-eslint 'vue-mode)
-(flycheck-add-mode 'javascript-eslint 'vue-html-mode)
-(flycheck-add-mode 'javascript-eslint 'css-mode)
-(add-hook 'vue-mode-hook 'flycheck-mode)
+;; (eval-after-load 'vue-mode
+;;     '(add-hook 'vue-mode-hook #'add-node-modules-path))
+
+;; (flycheck-add-mode 'javascript-eslint 'js-mode)
+;; (flycheck-add-mode 'javascript-eslint 'typescript-mode)
+;; (flycheck-add-mode 'javascript-eslint 'vue-html-mode)
+;; (flycheck-add-mode 'javascript-eslint 'css-mode)
 
 ;;end
 ;
