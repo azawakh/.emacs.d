@@ -199,6 +199,12 @@
 (require 'pug-mode)
 (add-to-list 'auto-mode-alist '("\\.pug\\'" . pug-mode))
 
+;;; cssの設定:
+(add-hook 'css-mode-hook
+          (lambda ()
+            (setq css-indent-offset 2)
+            ))
+
 ;;; scssの設定:
 (add-hook 'scss-mode-hook
           (lambda ()
