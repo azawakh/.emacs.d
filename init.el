@@ -12,7 +12,7 @@
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (prettier-js lsp-vue lsp-mode vue-mode git-gutter edit-server json-mode tide typescript-mode company-tern company markdown-preview-mode handlebars-mode pug-mode yaml-mode slim-mode markdown-mode eshell-git-prompt add-node-modules-path flycheck helm-ls-hg package-utils helm-ls-git web-mode js2-mode helm-git-grep)))
+    (dired-toggle lsp-vue lsp-mode vue-mode git-gutter edit-server json-mode typescript-mode prettier-js company-tern company markdown-preview-mode handlebars-mode pug-mode yaml-mode slim-mode markdown-mode eshell-git-prompt add-node-modules-path flycheck helm-ls-hg package-utils helm-ls-git web-mode js2-mode helm-git-grep)))
  '(show-paren-mode t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
