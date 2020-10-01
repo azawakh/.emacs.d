@@ -107,6 +107,10 @@
 ;; eshell-git-prompt
 (eshell-git-prompt-use-theme 'robbyrussell)
 
+;; dired-toggle
+(require 'dired-toggle)
+(setq-default dired-toggle-window-size 40)
+
 ;;; aspell:
 (setq-default ispell-program-name "aspell")
 
