@@ -104,12 +104,16 @@
 ;;; カーソルのある行をハイライトする:
 ;; (global-hl-line-mode t)
 
-;; eshell-git-prompt
+;;; eshell-git-prompt
 (eshell-git-prompt-use-theme 'robbyrussell)
 
-;; dired-toggle
+;;; dired-toggle
 (require 'dired-toggle)
 (setq-default dired-toggle-window-size 40)
+
+;;; recentf
+(require 'recentf)
+(recentf-mode 1)
 
 ;;; aspell:
 (setq-default ispell-program-name "aspell")
